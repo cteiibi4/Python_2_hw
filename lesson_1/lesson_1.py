@@ -37,7 +37,7 @@ print(f'Задание №5')
 ping = 'ping'
 adress = ['yandex.ru', 'youtube.com']
 args_ping = []
-for i in adress:
+for i in adress:    # Данный участок нужно упростить
     arg = [ping, i]
     args_ping.append(arg)
 for arg in args_ping:
