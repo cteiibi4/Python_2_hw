@@ -1,4 +1,5 @@
 import subprocess
+import chardet
 
 # Задание 1
 print(f'Задание №1')
@@ -20,9 +21,14 @@ for i in words_l_2:
     print(f'Тип: {type(i)}, Содержание: {i}, Длинна: {len(i)}')
 
 # Задание 3
-# print(f'Задание №3')
-# words_l_3 = [b'attribute', b'класс', b'функция', b'type']
-# Слова на русском языке невозможно записать в байтовом представлении
+print(f'Задание №3')
+words_l_3 = ['attribute', 'класс', 'функция', 'type']
+for element in words_l_3:
+    try:
+        obj = f"b'{element}'"
+        exec(obj)
+    except UnicodeEncodeError:
+        print(f'{element} не может быть bytes')
 
 # Задание 4
 print(f'Задание №4')
@@ -43,7 +49,8 @@ for i in adress:    # Данный участок нужно упростить
 for arg in args_ping:
     ping_process = subprocess.Popen(arg, stdout=subprocess.PIPE)
     for line in ping_process.stdout:
-        line = line.decode('cp866').encode('utf-8')
+        code = chardet.detect(line)
+        line = line.decode(code['encoding']).encode('utf-8')
         print(line.decode('utf-8'))
 
 # Задание 6
@@ -53,8 +60,12 @@ with open('test_file.txt', 'w') as f:
     for i in words_for_file:
         f.write(f'{i}\n')
     print(f)
-f = open('test_file.txt', 'r', encoding='utf-8')
-print(f.read())
-# Выдает ошибку при открытии файла в данной кодировке
-# UnicodeDecodeError: 'utf-8' codec can't decode byte 0xf1 in position 0: invalid continuation byte
 
+with open('test_file.txt') as f:
+    content = f.read()
+encoding = chardet.detect(content)['encoding']
+print(encoding)
+
+with open('test_file.txt', 'w', encoding=encoding) as f:
+    content = f.read()
+print(content)
