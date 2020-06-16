@@ -27,7 +27,7 @@ for element in words_l_3:
     try:
         obj = f"b'{element}'"
         exec(obj)
-    except UnicodeEncodeError:
+    except SyntaxError:
         print(f'{element} не может быть bytes')
 
 # Задание 4
@@ -59,13 +59,12 @@ words_for_file = ['сетевое программирование', 'сокет
 with open('test_file.txt', 'w') as f:
     for i in words_for_file:
         f.write(f'{i}\n')
-    print(f)
+    # print(f)
 
-with open('test_file.txt') as f:
+with open('test_file.txt', 'rb') as f:
     content = f.read()
-encoding = chardet.detect(content)['encoding']
-print(encoding)
+    encoding = chardet.detect(content)['encoding']
 
-with open('test_file.txt', 'w', encoding=encoding) as f:
+with open('test_file.txt', encoding=encoding) as f:
     content = f.read()
 print(content)
