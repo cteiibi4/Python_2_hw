@@ -32,7 +32,7 @@ def write_to_csv(csv_file, path):
     main_data = get_data(path)
     norm_csv_file = os.path.normpath(csv_file)
     with open(norm_csv_file, 'w') as f_n:
-        f_n_writer = csv.writer(f_n)
+        f_n_writer = csv.writer(f_n, quoting=csv.QUOTE_NONNUMERIC)
         for row in main_data:
             f_n_writer.writerow(row)
     with open(norm_csv_file) as f_n:
