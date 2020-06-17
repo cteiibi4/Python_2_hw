@@ -41,11 +41,8 @@ for i in words_l_4:
 # Задание 5
 print(f'Задание №5')
 ping = 'ping'
-adress = ['yandex.ru', 'youtube.com']
-args_ping = []
-for i in adress:    # Данный участок нужно упростить
-    arg = [ping, i]
-    args_ping.append(arg)
+address = ['yandex.ru', 'youtube.com']
+args_ping = [[ping, site] for site in address]
 for arg in args_ping:
     ping_process = subprocess.Popen(arg, stdout=subprocess.PIPE)
     for line in ping_process.stdout:
