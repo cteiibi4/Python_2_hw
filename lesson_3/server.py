@@ -1,7 +1,23 @@
 from socket import *
 import json
+import argparse
+
+
+def create_parcer():
+    """
+    Create named arguments for run server.
+    """
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-a', '--addr', default='')
+    parser.add_argument('-p', '--port', default=7777)
+    return parser
+
 
 def create_answer(code):
+    """
+    Receive anwer code, then forms dict for answer
+    retract json object for this code
+    """
     if round((code/100), 0) == 2:
         if code == 200:
             answer_message = 'OK'
@@ -52,20 +68,32 @@ def create_answer(code):
 
 
 def defenition_answer(message):
+    """
+    Taked dict from read_message,
+    then read action feild and retract code
+    """
     if message['action'] == 'presence':
         return create_answer(200)
 
 
 def read_message(message):
+    """
+    Read gotten mesage, converted from json
+    then call defenition_answer function
+    or taked code 400.
+    """
     try:
         received_message = json.loads(message)
         return defenition_answer(received_message)
     except:
         create_answer(400)
 
+
 if __name__ == '__main__':
+    parser = create_parcer()
+    namespace = parser.parse_args()
     sock = socket(type=SOCK_STREAM)
-    sock.bind(('', 8080))
+    sock.bind((namespace.addr, int(namespace.port)))
     sock.listen(5)
     try:
         while True:
