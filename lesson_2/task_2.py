@@ -18,7 +18,7 @@ def write_order_to_json(path_to_json, product, quantity, price, buyer, date):
         values.append(dict_to_json)
         objs.update({'orders': values})
         with open(path, 'w') as f:
-            json.dump(objs, f, indent=4)
+            json.dump(objs, f, indent=4, ensure_ascii=False)
     else:
         print(f'Файл {os.path.split(path)[1]} неверного формата.')
 
