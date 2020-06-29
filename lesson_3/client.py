@@ -2,7 +2,7 @@ from socket import *
 import json
 import time
 import argparse
-from .common.variables import DEFAULT_PORT, DEFAULT_IP_ADDRESS, ENCODING, MAX_PACKAGE_LENGTH
+from common.variables import DEFAULT_PORT, DEFAULT_IP_ADDRESS, ENCODING, MAX_PACKAGE_LENGTH
 client = 'client'
 status = 'OK'
 

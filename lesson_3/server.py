@@ -1,7 +1,7 @@
 from socket import *
 import json
 import argparse
-from.common.variables import ENCODING, MAX_PACKAGE_LENGTH, MAX_CONNECTIONS,DEFAULT_PORT, DEFAULT_IP_ADDRESS
+from common.variables import ENCODING, MAX_PACKAGE_LENGTH, MAX_CONNECTIONS ,DEFAULT_PORT, DEFAULT_IP_ADDRESS
 
 def create_parcer():
     """
@@ -95,16 +95,16 @@ if __name__ == '__main__':
     namespace = parser.parse_args()
     sock = socket(type=SOCK_STREAM)
     sock.bind((namespace.addr, int(namespace.port)))
-    sock.listen(5)
+    sock.listen(MAX_CONNECTIONS)
     try:
         while True:
             conn, addr = sock.accept()
-            data = conn.recv(1024)
+            data = conn.recv(MAX_PACKAGE_LENGTH )
             if not data:
                 answer = create_answer(400)
             else:
                 answer = read_message(data)
                 print(answer)
-            conn.send(answer.encode('utf-8'))
+            conn.send(answer.encode(ENCODING))
     finally:
         conn.close()
