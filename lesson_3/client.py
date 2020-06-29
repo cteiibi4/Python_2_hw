@@ -2,7 +2,7 @@ from socket import *
 import json
 import time
 import argparse
-
+from .common.variables import DEFAULT_PORT, DEFAULT_IP_ADDRESS, ENCODING, MAX_PACKAGE_LENGTH
 client = 'client'
 status = 'OK'
 
@@ -12,8 +12,8 @@ def create_parcer():
     Create named arguments for run client.
     '''
     parser = argparse.ArgumentParser()
-    parser.add_argument('-a', '--addr', default='localhost')
-    parser.add_argument('-p', '--port', default=7777)
+    parser.add_argument('-a', '--addr', default=DEFAULT_IP_ADDRESS)
+    parser.add_argument('-p', '--port', default=DEFAULT_PORT)
     return parser
 
 
@@ -54,7 +54,7 @@ def defenition_answer(message):
     """
     if message['action'] == 'probe':
         message_for_server = presence_message()
-        s.send(message_for_server.encode('utf-8'))
+        s.send(message_for_server.encode(ENCODING))
 
 
 if __name__ == '__main__':
@@ -63,7 +63,7 @@ if __name__ == '__main__':
     s = socket(AF_INET, SOCK_STREAM)
     s.connect((namespace.addr, int(namespace.port)))
     message_for_server = presence_message()
-    s.send(message_for_server.encode('utf-8'))
-    response = s.recv(1024)
+    s.send(message_for_server.encode(ENCODING))
+    response = s.recv(MAX_PACKAGE_LENGTH)
     read_message(response)
-    print(f'Ответ: {response.decode("utf-8")}')
+    print(f'Ответ: {response.decode(ENCODING)}')

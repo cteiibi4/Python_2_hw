@@ -1,15 +1,15 @@
 from socket import *
 import json
 import argparse
-
+from.common.variables import ENCODING, MAX_PACKAGE_LENGTH, MAX_CONNECTIONS,DEFAULT_PORT, DEFAULT_IP_ADDRESS
 
 def create_parcer():
     """
     Create named arguments for run server.
     """
     parser = argparse.ArgumentParser()
-    parser.add_argument('-a', '--addr', default='')
-    parser.add_argument('-p', '--port', default=7777)
+    parser.add_argument('-a', '--addr', default=DEFAULT_IP_ADDRESS)
+    parser.add_argument('-p', '--port', default=DEFAULT_PORT)
     return parser
 
 
@@ -18,7 +18,8 @@ def create_answer(code):
     Receive anwer code, then forms dict for answer
     retract json object for this code
     """
-    if round((code/100), 0) == 2:
+
+    if round((code / 100), 0) == 2:
         if code == 200:
             answer_message = 'OK'
         elif code == 201:
@@ -27,7 +28,7 @@ def create_answer(code):
             answer_message = 'Accepted'
         else:
             answer_message = 'Answer'
-    elif round((code/100), 0) == 4:
+    elif round((code / 100), 0) == 4:
         if code == 400:
             answer_message = 'Wrong JSON-object/ wrong request'
         elif code == 401:
@@ -44,14 +45,14 @@ def create_answer(code):
             answer_message = 'User offline'
         else:
             answer_message = 'idc'
-    elif round((code/100), 0) == 1:
+    elif round((code / 100), 0) == 1:
         if code == 100:
             answer_message = 'Base notification'
         elif code == 101:
             answer_message = 'Important notification'
         else:
             answer_message = 'Notification'
-    elif round((code/100), 0) == 5:
+    elif round((code / 100), 0) == 5:
         if code == 500:
             answer_message = 'Server ERROR'
         else:
