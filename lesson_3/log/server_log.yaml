@@ -5,7 +5,7 @@ formatters:
 handlers:
   server:
     class: logging.handlers.TimedRotatingFileHandler
-    filename: log\server_log
+    filename: log\server_log.log
     level: DEBUG
     formatter: simple
     when: D
