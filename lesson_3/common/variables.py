@@ -24,3 +24,6 @@ MAX_CONNECTIONS = 5
 MAX_PACKAGE_LENGTH = 1024
 # Project encoding
 ENCODING = 'utf-8'
+# Path for config files for logging
+LOG_PATH_CONFIG_SERVER = 'log/server_log.yaml'
+LOG_PATH_CONFIG_CLIENT = 'log/client_log.yaml'

@@ -2,9 +2,20 @@ from socket import *
 import json
 import time
 import argparse
-from common.variables import DEFAULT_PORT, DEFAULT_IP_ADDRESS, ENCODING, MAX_PACKAGE_LENGTH
+import logging
+import logging.config
+import logging.handlers
+import yaml
+from common.variables import DEFAULT_PORT, DEFAULT_IP_ADDRESS, ENCODING, MAX_PACKAGE_LENGTH, LOG_PATH_CONFIG_CLIENT
 client = 'client'
 status = 'OK'
+
+
+with open(LOG_PATH_CONFIG_CLIENT, 'r') as f:
+    config = yaml.safe_load(f.read())
+    logging.config.dictConfig(config)
+logger = logging.getLogger('client')
+logger.info('Start logging')
 
 
 def create_parcer():
@@ -14,6 +25,7 @@ def create_parcer():
     parser = argparse.ArgumentParser()
     parser.add_argument('-a', '--addr', default=DEFAULT_IP_ADDRESS)
     parser.add_argument('-p', '--port', default=DEFAULT_PORT)
+    logger.info(f'take args on start server: ip address {parser.parse_args().addr}, port {parser.parse_args().port}')
     return parser
 
 
@@ -31,6 +43,7 @@ def presence_message():
             'status': status,
         }
     }
+    logger.info('create presence message')
     return json.dumps(message)
 
 
@@ -39,10 +52,12 @@ def read_message(message):
     Check message from server and
     call defenition_answer function
     """
+    logger.info('read server answer')
     try:
         received_message = json.loads(message)
         return defenition_answer(received_message)
     except:
+        logger.error('Exception:', exc_info=True)
         pass
 
 
@@ -52,6 +67,7 @@ def defenition_answer(message):
     call presence_massage function
     and send presence message
     """
+    logger.info('taked test server message: "probe"')
     if message['action'] == 'probe':
         message_for_server = presence_message()
         s.send(message_for_server.encode(ENCODING))
@@ -66,4 +82,5 @@ if __name__ == '__main__':
     s.send(message_for_server.encode(ENCODING))
     response = s.recv(MAX_PACKAGE_LENGTH)
     read_message(response)
+    logger.info(f'Answer: {response.decode(ENCODING)}')
     print(f'Ответ: {response.decode(ENCODING)}')
