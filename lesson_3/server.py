@@ -6,6 +6,7 @@ import logging
 import logging.config
 import logging.handlers
 import yaml
+from common.decoration import log
 from common.variables import ENCODING, MAX_PACKAGE_LENGTH, MAX_CONNECTIONS ,DEFAULT_PORT, DEFAULT_IP_ADDRESS, LOG_PATH_CONFIG_SERVER
 
 
@@ -16,7 +17,7 @@ with open(LOG_PATH_CONFIG_SERVER, 'r') as f:
 logger = logging.getLogger('server')
 logger.info('Start logging')
 
-
+@log
 def create_parcer():
     """
     Create named arguments for run server.
@@ -27,7 +28,7 @@ def create_parcer():
     logger.info(f'take args on start server: ip address {parser.parse_args().addr}, port {parser.parse_args().port}')
     return parser
 
-
+@log
 def create_answer(code):
     """
     Receive anwer code, then forms dict for answer
@@ -83,7 +84,7 @@ def create_answer(code):
     logger.info(f'return message for code {code}')
     return _json_answer
 
-
+@log
 def defenition_answer(message):
     """
     Take dict from read_message,
@@ -93,7 +94,7 @@ def defenition_answer(message):
     if message['action'] == 'presence':
         return create_answer(200)
 
-
+@log
 def read_message(message):
     """
     Read gotten mesage, converted from json

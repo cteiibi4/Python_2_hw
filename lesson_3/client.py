@@ -6,6 +6,7 @@ import logging
 import logging.config
 import logging.handlers
 import yaml
+from common.decoration import log
 from common.variables import DEFAULT_PORT, DEFAULT_IP_ADDRESS, ENCODING, MAX_PACKAGE_LENGTH, LOG_PATH_CONFIG_CLIENT
 client = 'client'
 status = 'OK'
@@ -17,7 +18,7 @@ with open(LOG_PATH_CONFIG_CLIENT, 'r') as f:
 logger = logging.getLogger('client')
 logger.info('Start logging')
 
-
+@log
 def create_parcer():
     '''
     Create named arguments for run client.
@@ -28,7 +29,7 @@ def create_parcer():
     logger.info(f'take args on start server: ip address {parser.parse_args().addr}, port {parser.parse_args().port}')
     return parser
 
-
+@log
 def presence_message():
     """
     Create presence request
@@ -46,7 +47,7 @@ def presence_message():
     logger.info('create presence message')
     return json.dumps(message)
 
-
+@log
 def read_message(message):
     """
     Check message from server and
@@ -60,7 +61,7 @@ def read_message(message):
         logger.error('Exception:', exc_info=True)
         pass
 
-
+@log
 def defenition_answer(message):
     """
     if server taked action = probe
