@@ -7,15 +7,15 @@ import logging.config
 import logging.handlers
 import yaml
 from common.decoration import log
-from common.variables import ENCODING, MAX_PACKAGE_LENGTH, MAX_CONNECTIONS ,DEFAULT_PORT, DEFAULT_IP_ADDRESS, LOG_PATH_CONFIG_SERVER
-
-
+from common.variables import ENCODING, MAX_PACKAGE_LENGTH, MAX_CONNECTIONS, DEFAULT_PORT, DEFAULT_IP_ADDRESS, \
+    LOG_PATH_CONFIG_SERVER
 
 with open(LOG_PATH_CONFIG_SERVER, 'r') as f:
     config = yaml.safe_load(f.read())
     logging.config.dictConfig(config)
 logger = logging.getLogger('server')
 logger.info('Start logging')
+
 
 @log
 def create_parcer():
@@ -27,6 +27,7 @@ def create_parcer():
     parser.add_argument('-p', '--port', default=DEFAULT_PORT)
     logger.info(f'take args on start server: ip address {parser.parse_args().addr}, port {parser.parse_args().port}')
     return parser
+
 
 @log
 def create_answer(code):
@@ -84,6 +85,7 @@ def create_answer(code):
     logger.info(f'return message for code {code}')
     return _json_answer
 
+
 @log
 def defenition_answer(message):
     """
@@ -93,6 +95,7 @@ def defenition_answer(message):
     logger.info(f'take massage')
     if message['action'] == 'presence':
         return create_answer(200)
+
 
 @log
 def read_message(message):
@@ -119,7 +122,7 @@ if __name__ == '__main__':
     try:
         while True:
             conn, addr = sock.accept()
-            data = conn.recv(MAX_PACKAGE_LENGTH )
+            data = conn.recv(MAX_PACKAGE_LENGTH)
             if not data:
                 answer = create_answer(400)
             else:
